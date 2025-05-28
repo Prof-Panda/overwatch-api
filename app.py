@@ -13,17 +13,19 @@ def recommend():
     data = request.json
     teammates = ", ".join(data["teammates"])
 
-    prompt = (
-    f"You are an Overwatch 2 coach helping a player choose the best hero to complete their team. "
-    f"Each Overwatch team has 1 tank, 2 DPS, and 2 supports. "
-    f"The player has 4 teammates already locked in: {teammates}. "
-    f"Based on common team synergies, meta picks, role balance, and hero counters, recommend the best 5th hero to play. "
+   prompt = (
+    f"You are an expert Overwatch 2 coach. Each team must have exactly 1 tank, 2 damage (DPS), and 2 support heroes — no exceptions. "
+    f"The player already has 4 teammates using these heroes: {teammates}. "
+    f"Your job is to recommend the best 5th hero **to fill the missing role**, based on the current team composition, role balance, and hero synergies. "
+    f"First, identify which role is missing. Then suggest a hero from that role who best complements the team. "
 
-    f"Return your answer in the following format:\n\n"
-    f"- RECOMMENDED PICK: <Hero Name>\n"
-    f"- REASON: <1–2 sentence explanation>\n"
-    f"- RUNNER UP: <Hero Name>\n"
-    f"- AVOID: <List of 2–3 heroes that should not be selected by this user>\n"
+    f"Return your answer in the following format:\n"
+    f"- **Recommended Pick**: <Hero Name> (<Hero Role>)\n"
+    f"- **Reason**: <Short synergy or strategy explanation>\n"
+    f"- **Runner-Up**: <Hero Name> (<Hero Role>)\n"
+    f"- **Avoid**: <2–3 heroes that would disrupt team balance or synergy>\n\n"
+
+    f"⚠️ Important: Do not recommend a hero if their role would result in more than 1 tank, more than 2 damage, or more than 2 supports."
 )
 
 
