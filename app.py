@@ -23,7 +23,7 @@ def recommend():
     f"- RECOMMENDED PICK: <Hero Name>\n"
     f"- REASON: <1–2 sentence explanation>\n"
     f"- RUNNER UP: <Hero Name>\n"
-    f"- AVOID: <List of 2–3 heroes that would not work well with the team>\n"
+    f"- AVOID: <List of 2–3 heroes that should not be selected by this user>\n"
 )
 
 
