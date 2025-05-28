@@ -6,6 +6,7 @@ import os
 app = Flask(__name__)
 CORS(app)
 
+# Initialize OpenAI client using API key from environment variable
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 @app.route("/recommend", methods=["POST"])
@@ -13,22 +14,25 @@ def recommend():
     data = request.json
     teammates = ", ".join(data["teammates"])
 
-   prompt = (
-    f"You are an expert Overwatch 2 coach. Each team must have exactly 1 tank, 2 damage (DPS), and 2 support heroes — no exceptions. "
-    f"The player already has 4 teammates using these heroes: {teammates}. "
-    f"Your job is to recommend the best 5th hero **to fill the missing role**, based on the current team composition, role balance, and hero synergies. "
-    f"First, identify which role is missing. Then suggest a hero from that role who best complements the team. "
+    # Updated prompt with strict role mapping and role balance logic
+    prompt = (
+        "You are an expert Overwatch 2 coach. Every team must include exactly 1 tank, 2 damage (DPS), and 2 support heroes — no exceptions. "
+        "You will be given 4 teammates' heroes and must recommend the best 5th hero to complete the team. "
+        "Use the hero role list below to ensure correct role balance:\n\n"
+        "Tanks: D.Va, Doomfist, Junker Queen, Mauga, Orisa, Ramattra, Reinhardt, Roadhog, Sigma, Winston, Wrecking Ball, Zarya\n"
+        "Damage: Ashe, Bastion, Cassidy, Echo, Genji, Hanzo, Junkrat, Mei, Pharah, Reaper, Sojourn, Soldier: 76, Sombra, Symmetra, Torbjorn, Tracer, Venture, Widowmaker\n"
+        "Support: Ana, Baptiste, Brigitte, Illari, Kiriko, Lifeweaver, Lucio, Mercy, Moira, Zenyatta\n\n"
+        f"The current team already includes: {teammates}. "
+        "Determine which role is missing. Recommend a hero from that role that complements the team in terms of strategy, synergy, and meta. "
+        "Never recommend a second tank or a third support or third DPS.\n\n"
+        "Return your answer using this format:\n"
+        "- **Recommended Pick**: <Hero Name> (<Hero Role>)\n"
+        "- **Reason**: <Short explanation>\n"
+        "- **Runner-Up**: <Hero Name> (<Hero Role>)\n"
+        "- **Avoid**: <2–3 heroes that would disrupt team balance or synergy>\n"
+    )
 
-    f"Return your answer in the following format:\n"
-    f"- **Recommended Pick**: <Hero Name> (<Hero Role>)\n"
-    f"- **Reason**: <Short synergy or strategy explanation>\n"
-    f"- **Runner-Up**: <Hero Name> (<Hero Role>)\n"
-    f"- **Avoid**: <2–3 heroes that would disrupt team balance or synergy>\n\n"
-
-    f"⚠️ Important: Do not recommend a hero if their role would result in more than 1 tank, more than 2 damage, or more than 2 supports."
-)
-
-
+    # Make the call to OpenAI's Chat API
     response = client.chat.completions.create(
         model="gpt-4",
         messages=[{"role": "user", "content": prompt}],
