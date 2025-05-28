@@ -14,10 +14,18 @@ def recommend():
     teammates = ", ".join(data["teammates"])
 
     prompt = (
-        f"I am playing OverWatch 2. Please provide a suggestion for which character I should play "
-        f"as based on what my teammates are using. Remember, each team should have 1 tank, 2 DPS, and 2 support. "
-        f"Here are the 4 characters my teammates are using: {teammates}"
-    )
+    f"You are an Overwatch 2 coach helping a player choose the best hero to complete their team. "
+    f"Each Overwatch team has 1 tank, 2 DPS, and 2 supports. "
+    f"The player has 4 teammates already locked in: {teammates}. "
+    f"Based on common team synergies, meta picks, role balance, and hero counters, recommend the best 5th hero to play. "
+
+    f"Return your answer in the following format:\n\n"
+    f"- **Recommended Pick**: <Hero Name>\n"
+    f"- **Reason**: <1–2 sentence explanation>\n"
+    f"- **Runner-Up**: <Hero Name>\n"
+    f"- **Avoid**: <List of 2–3 heroes that would not work well with the team>\n"
+)
+
 
     response = client.chat.completions.create(
         model="gpt-4",
