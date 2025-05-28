@@ -20,10 +20,10 @@ def recommend():
     f"Based on common team synergies, meta picks, role balance, and hero counters, recommend the best 5th hero to play. "
 
     f"Return your answer in the following format:\n\n"
-    f"- **Recommended Pick**: <Hero Name>\n"
-    f"- **Reason**: <1–2 sentence explanation>\n"
-    f"- **Runner-Up**: <Hero Name>\n"
-    f"- **Avoid**: <List of 2–3 heroes that would not work well with the team>\n"
+    f"- RECOMMENDED PICK: <Hero Name>\n"
+    f"- REASON: <1–2 sentence explanation>\n"
+    f"- RUNNER UP: <Hero Name>\n"
+    f"- AVOID: <List of 2–3 heroes that would not work well with the team>\n"
 )
 
 
